@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { Account } from '../domain/account.interface';
+
 
 @Injectable()
 export class AccountUseCase {
