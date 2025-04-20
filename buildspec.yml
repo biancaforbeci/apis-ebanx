@@ -9,7 +9,9 @@ phases:
   build:
     commands:
       - npm run build
-      - zip -r deploy.zip dist package.json package-lock.json Procfile node_modules
+      - mkdir -p deploy
+      - cp -r dist package.json package-lock.json Procfile node_modules deploy/
+      - cd deploy && zip -r ../deploy.zip .
 
 artifacts:
   files:
