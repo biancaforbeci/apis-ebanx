@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './adapters/in/api/app.controller.adapter';
 import { AccountUseCase } from './application/usecase/account.usecase';
+import { AccountController } from './adapters/in/api/account.controller.adapter';
 
 
 @Module({
   imports: [],
-  controllers: [AppController],
+  controllers: [AccountController],
   providers: [AccountUseCase],
 })
 export class AppModule {}
