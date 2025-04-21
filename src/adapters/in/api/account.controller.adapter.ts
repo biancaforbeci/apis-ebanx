@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Query, HttpCode, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, HttpCode, HttpException, HttpStatus, UseFilters } from '@nestjs/common';
 import { AccountUseCase } from '../../../application/usecase/account.usecase';
 import EventRequest from '../request/event.request';
+import { NotFoundExceptionFilter } from './not-found.exception.filter';
   
   @Controller()
+  @UseFilters(NotFoundExceptionFilter)
   export class AccountController {
     constructor(private readonly accountUseCase: AccountUseCase) {}
   
@@ -14,10 +16,11 @@ import EventRequest from '../request/event.request';
     }
   
     @Get('balance')
+    @HttpCode(200)
     getBalance(@Query('account_id') accountId: string): number {
       const balance = this.accountUseCase.getBalance(accountId);
       if (balance === null) {
-        throw new HttpException('0', HttpStatus.NOT_FOUND);
+        throw new Error();
       }
       return balance;
     }
@@ -34,7 +37,7 @@ import EventRequest from '../request/event.request';
         case 'withdraw': {
           const account = this.accountUseCase.withdraw(event.origin, event.amount);
           if (!account) {
-            throw new HttpException('0', HttpStatus.NOT_FOUND);
+            throw new Error();
           }
           return { origin: account };
         }
@@ -42,7 +45,7 @@ import EventRequest from '../request/event.request';
         case 'transfer': {
           const result = this.accountUseCase.transfer(event.origin, event.destination, event.amount);
           if (!result) {
-            throw new HttpException('0', HttpStatus.NOT_FOUND);
+            throw new Error();
           }
           return result;
         }

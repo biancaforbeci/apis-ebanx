@@ -48,13 +48,11 @@ describe('AccountController', () => {
       expect(result).toBe(balance);
     });
 
-    it('should throw NOT_FOUND when account does not exist', () => {
+    it('should throw Error when account does not exist', () => {
       const accountId = '999';
       (accountUseCase.getBalance as jest.Mock).mockReturnValue(null);
 
-      expect(() => controller.getBalance(accountId)).toThrow(
-        new HttpException('0', HttpStatus.NOT_FOUND),
-      );
+      expect(() => controller.getBalance(accountId)).toThrow(Error);
     });
   });
 
@@ -91,16 +89,14 @@ describe('AccountController', () => {
         expect(result).toEqual({ origin: mockAccount });
       });
 
-      it('should throw NOT_FOUND when account does not exist', () => {
+      it('should throw Error when account does not exist', () => {
         const event: EventRequest = {
           type: 'withdraw',
           origin: '999',
           amount: 50,
         };
         (accountUseCase.withdraw as jest.Mock).mockReturnValue(null);
-        expect(() => controller.handleEvent(event)).toThrow(
-          new HttpException('0', HttpStatus.NOT_FOUND),
-        );
+        expect(() => controller.handleEvent(event)).toThrow(Error);
       });
     });
 
@@ -128,7 +124,7 @@ describe('AccountController', () => {
         expect(result).toEqual(mockResult);
       });
 
-      it('should throw NOT_FOUND when origin account does not exist', () => {
+      it('should throw Error when origin account does not exist', () => {
         const event: EventRequest = {
           type: 'transfer',
           origin: '999',
@@ -137,9 +133,7 @@ describe('AccountController', () => {
         };
         (accountUseCase.transfer as jest.Mock).mockReturnValue(null);
 
-        expect(() => controller.handleEvent(event)).toThrow(
-          new HttpException('0', HttpStatus.NOT_FOUND),
-        );
+        expect(() => controller.handleEvent(event)).toThrow(Error);
       });
     });
 
