@@ -1,15 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountUseCase } from './account.usecase';
+import { ACCOUNT_INPUT_PORT } from '../ports/in/account-input.port';
 
 describe('AccountUseCase', () => {
   let accountUseCase: AccountUseCase;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AccountUseCase],
+      providers: [
+        {
+          provide: ACCOUNT_INPUT_PORT,
+          useClass: AccountUseCase
+        }
+      ],
     }).compile();
 
-    accountUseCase = module.get<AccountUseCase>(AccountUseCase);
+    accountUseCase = module.get<AccountUseCase>(ACCOUNT_INPUT_PORT);
   });
 
   describe('reset', () => {

@@ -3,6 +3,7 @@ import { AccountController } from './account.controller.adapter';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import EventRequest from '../request/event.request';
 import { AccountUseCase } from '../../../application/usecase/account.usecase';
+import { ACCOUNT_INPUT_PORT } from '../../../application/ports/in/account-input.port';
 
 describe('AccountController', () => {
   let controller: AccountController;
@@ -13,7 +14,7 @@ describe('AccountController', () => {
       controllers: [AccountController],
       providers: [
         {
-          provide: AccountUseCase,
+          provide: ACCOUNT_INPUT_PORT,
           useValue: {
             reset: jest.fn(),
             getBalance: jest.fn(),
@@ -26,7 +27,7 @@ describe('AccountController', () => {
     }).compile();
 
     controller = module.get<AccountController>(AccountController);
-    accountUseCase = module.get<AccountUseCase>(AccountUseCase);
+    accountUseCase = module.get<AccountUseCase>(ACCOUNT_INPUT_PORT);
   });
 
   describe('reset', () => {
