@@ -1,25 +1,28 @@
-import { Controller, Get, Post, Body, Query, HttpCode, HttpException, HttpStatus, UseFilters } from '@nestjs/common';
-import { AccountUseCase } from '../../../application/usecase/account.usecase';
+import { Controller, Get, Post, Body, Query, HttpCode, HttpException, HttpStatus, UseFilters, Inject } from '@nestjs/common';
 import EventRequest from '../request/event.request';
 import { NotFoundExceptionFilter } from '../../../infrastructure/exception-filter/not-found.exception.filter';
+import AccountInputPort, { ACCOUNT_INPUT_PORT } from '../../../application/ports/in/account-input.port';
 
   
   @Controller()
   @UseFilters(NotFoundExceptionFilter)
   export class AccountController {
-    constructor(private readonly accountUseCase: AccountUseCase) {}
+    constructor(
+        @Inject(ACCOUNT_INPUT_PORT)
+        private readonly accountInputPort: AccountInputPort
+    ) {}
   
     @Post('reset')
     @HttpCode(200)
     reset(): string {
-      this.accountUseCase.reset();
+      this.accountInputPort.reset();
       return 'OK';
     }
   
     @Get('balance')
     @HttpCode(200)
     getBalance(@Query('account_id') accountId: string): number {
-      const balance = this.accountUseCase.getBalance(accountId);
+      const balance = this.accountInputPort.getBalance(accountId);
       if (balance === null) {
         throw new Error('');
       }
@@ -31,12 +34,12 @@ import { NotFoundExceptionFilter } from '../../../infrastructure/exception-filte
     handleEvent(@Body() event: EventRequest) {
       switch (event.type) {
         case 'deposit': {
-          const account = this.accountUseCase.deposit(event.destination, event.amount);
+          const account = this.accountInputPort.deposit(event.destination, event.amount);
           return { destination: account };
         }
   
         case 'withdraw': {
-          const account = this.accountUseCase.withdraw(event.origin, event.amount);
+          const account = this.accountInputPort.withdraw(event.origin, event.amount);
           if (!account) {
             throw new Error();
           }
@@ -44,7 +47,7 @@ import { NotFoundExceptionFilter } from '../../../infrastructure/exception-filte
         }
   
         case 'transfer': {
-          const result = this.accountUseCase.transfer(event.origin, event.destination, event.amount);
+          const result = this.accountInputPort.transfer(event.origin, event.destination, event.amount);
           if (!result) {
             throw new Error();
           }

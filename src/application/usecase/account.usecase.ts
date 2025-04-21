@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Account } from '../domain/account.interface';
+import AccountInputPort from '../ports/in/account-input.port';
 
 
 @Injectable()
-export class AccountUseCase {
+export class AccountUseCase implements AccountInputPort {
   private accounts: Map<string, Account> = new Map();
 
   reset(): void {
