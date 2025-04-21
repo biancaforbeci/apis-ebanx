@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Body, Query, HttpCode, HttpException, HttpStatus, UseFilters } from '@nestjs/common';
 import { AccountUseCase } from '../../../application/usecase/account.usecase';
 import EventRequest from '../request/event.request';
-import { NotFoundExceptionFilter } from './not-found.exception.filter';
+import { NotFoundExceptionFilter } from '../../../infrastructure/exception-filter/not-found.exception.filter';
+
   
   @Controller()
   @UseFilters(NotFoundExceptionFilter)
