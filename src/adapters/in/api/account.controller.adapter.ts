@@ -20,7 +20,7 @@ import { NotFoundExceptionFilter } from './not-found.exception.filter';
     getBalance(@Query('account_id') accountId: string): number {
       const balance = this.accountUseCase.getBalance(accountId);
       if (balance === null) {
-        throw new Error();
+        throw new Error('');
       }
       return balance;
     }

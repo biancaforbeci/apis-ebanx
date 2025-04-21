@@ -6,6 +6,6 @@ export class NotFoundExceptionFilter implements ExceptionFilter {
   catch(exception: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    response.status(404).end();
+    response.status(404).json(0);
   }
 } 
