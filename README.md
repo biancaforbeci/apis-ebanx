@@ -42,11 +42,33 @@ $ yarn run test:cov
 -> POST - /event
 
 ## Using with EC2
-  This project deployed using EC2 and it can access using this URL:
+  This project deployed using EC2 and it can access using this URL: (ATUALMENTE DESLIGADO O EC2 POR QUESTÕES DE CUSTO)
+ 
+ ```bash
+http://18.234.172.205:3000/  
+```
+
+## Usar o ngrok 
+
+  If you want to expose URL, you can use ngrok, first install 
 
  ```bash
-http://18.234.172.205:3000/
+npm install -g ngrok 
 ```
+
+Authenticate Ngrok (one time setup):
+
+ ```bash
+ngrok config add-authtoken YOUR_AUTH_TOKEN
+```
+
+Expose a Local Server:
+
+ ```bash
+ngrok http 3000
+```
+
+This exposes http://localhost:3000 to a public URL like https://random.ngrok.io.
 
 
 
